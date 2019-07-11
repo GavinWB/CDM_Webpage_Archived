@@ -22,15 +22,22 @@ db = SQLAlchemy(app)
 # All tables in DB
 class User(db.Model):
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
-    username = db.Column(db.String(100), unique = True)
-    password = db.Column(db.String(255))
+    username = db.Column(db.String(), unique = True)
+    password = db.Column(db.String())
 
-class Robot(db.Model):
+class Question(db.Model):
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
-    name = db.Column(db.String(255))
-    ip = db.Column(db.String(255))
-    ownerID = db.Column(db.Integer)
-    available = db.Column(db.Boolean)
+    originalQuestionID = db.Column(db.String(), unique = True)
+    answerKey = db.Column(db.String())
+    isMultipleChoiceQuestion = db.Column(db.Boolean)
+    includesDiagram = db.Column(db.Boolean)
+    diagramName = db.Column(db.String())
+    schoolGrade = db.Column(db.Integer)
+    year = db.Column(db.Integer)
+    question = db.Column(db.String())
+    subject = db.Column(db.String())
+    category = db.Column(db.String())
+    qmatrix = db.Column(db.String())
 
 # Token decorator
 def token_required(f):
@@ -111,91 +118,30 @@ def user_login():
 
     return jsonify({"success": False, "message": "Wrong username or password"})
 
-@app.route("/robots", methods=["GET"])
+@app.route("/question/<question_id>", methods=["GET"])
 @token_required
-def get_all_robots(current_user):
-    robots = Robot.query.all()
+def get_question_by_id(current_user, question_id):
+    question = Question.query.filter_by(originalQuestionID = question_id).first()
 
-    output = []
+    if not question:
+        return jsonify({"success": False, "message": "There is no question with this id"})
 
-    for robot in robots:
-        robot_data = {}
-        robot_data["id"] = robot.id
-        robot_data["name"] = robot.name
-        robot_data["ip"] = robot.ip
-        robot_data["ownerID"] = robot.ownerID
-        robot_data["available"] = robot.available
+    q_data = {}
 
-        output.append(robot_data)
+    # q_data["id"] = question.id
+    q_data["originalQuestionID"] = question.originalQuestionID
+    # q_data["answerKey"] = question.answerKey
+    q_data["isMultipleChoiceQuestion"] = question.isMultipleChoiceQuestion
+    q_data["includesDiagram"] = question.includesDiagram
+    q_data["diagramName"] = question.diagramName
+    # q_data["schoolGrade"] = question.schoolGrade
+    # q_data["year"] = question.year
+    q_data["question"] = question.question
+    # q_data["subject"] = question.subject
+    # q_data["category"] = question.category
+    # q_data["qmatrix"] = question.qmatrix
 
-    return jsonify({"robots": output})
-
-@app.route("/robot", methods=["GET"])
-@token_required
-def get_owned_robot(current_user):
-    owned_robot = Robot.query.filter_by(ownerID = current_user.id, available = False).first()
-    robot_data = {}
-
-    if owned_robot:
-        if not owned_robot.available:
-            robot_data["id"] = owned_robot.id
-            robot_data["name"] = owned_robot.name
-            robot_data["ip"] = owned_robot.ip
-            robot_data["ownerID"] = owned_robot.ownerID
-
-    return jsonify({"robot": robot_data})
-
-@app.route("/robot/<robot_id>", methods=["POST"])
-@token_required
-def rent_robot(current_user, robot_id):
-    # Check if user own any other robot yet
-
-    # Robot in db own by user
-    owned_robot = Robot.query.filter_by(ownerID = current_user.id, available = False).first()
-    # The robot the user request
-    robot_data = Robot.query.filter_by(id = robot_id).first()
-
-    if owned_robot:
-        if owned_robot.id == robot_data.id:
-            return jsonify({"success": False, "message": "You already own this robot"})
-        else:
-            return jsonify({"success": False, "message": "You already own another robot"})
-
-    if not robot_data:
-        return jsonify({"success": False, "message": "There is no robot with this id"})
-
-    if not robot_data.available:
-        if robot_data.ownerID == current_user.id:
-            return jsonify({"success": False, "message": "You already own this robot"})
-        else:
-            return jsonify({"success": False, "message": "This robot has been owned by other"})
-
-    robot_data.available = False
-    robot_data.ownerID = current_user.id
-    
-    db.session.commit()
-    
-    return jsonify({"success": True, "message": "Successfully rent robot"})
-
-@app.route("/robot/<robot_id>", methods=["PUT"])
-@token_required
-def return_robot(current_user, robot_id):
-    robot_data = Robot.query.filter_by(id = robot_id).first()
-
-    if not robot_data:
-        return jsonify({"success": False, "message": "There is no robot with this id"})
-
-    if robot_data.available:
-        return jsonify({"success": False, "message": "This robot is already available"})
-
-    if robot_data.ownerID != current_user.id:
-        return jsonify({"success": False, "message": "You do not own this robot"})
-
-    robot_data.available = True
-
-    db.session.commit()
-
-    return jsonify({"success": True, "message": "Successfully return robot"})
+    return jsonify({"success": True, "data": q_data})
 
 # Debugging routes
 @app.route("/users", methods=["GET"])
@@ -213,6 +159,57 @@ def get_all_users():
         output.append(user_data)
 
     return jsonify({"users": output})
+
+@app.route("/questions", methods=["GET"])
+def get_all_questions():
+    questions = Question.query.all()
+
+    output = []
+
+    for question in questions:
+        q_data = {}
+
+        q_data["id"] = question.id
+        q_data["originalQuestionID"] = question.originalQuestionID
+        q_data["answerKey"] = question.answerKey
+        q_data["isMultipleChoiceQuestion"] = question.isMultipleChoiceQuestion
+        q_data["includesDiagram"] = question.includesDiagram
+        q_data["diagramName"] = question.diagramName
+        q_data["schoolGrade"] = question.schoolGrade
+        q_data["year"] = question.year
+        q_data["question"] = question.question
+        q_data["subject"] = question.subject
+        q_data["category"] = question.category
+        q_data["qmatrix"] = question.qmatrix
+
+        output.append(q_data)
+
+    return jsonify({"questions": output})
+
+@app.route("/questions/import", methods=["POST"])
+def import_questions():
+    questions = request.get_json()
+
+    # return jsonify({"success": True, "amount": len(questions), "first": questions[0]["originalquestionid"]})
+
+    for question in questions:
+        new_question = Question(
+            originalQuestionID = question["originalquestionid"],
+            answerKey = question["answerkey"],
+            isMultipleChoiceQuestion = bool(question["ismultiplechoicequestion"]),
+            includesDiagram = bool(question["includesdiagram"]),
+            diagramName = question["diagramname"],
+            schoolGrade = question["schoolgrade"],
+            year = question["year"],
+            question = question["question"],
+            subject = question["subject"],
+            category = question["category"],
+            qmatrix = question["qmatrix"]
+        )
+        db.session.add(new_question)
+        db.session.commit()
+
+    return jsonify({"success": True})
 
 if __name__ == '__main__':
     app.run(debug=True)
