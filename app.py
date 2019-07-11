@@ -27,7 +27,7 @@ class User(db.Model):
 
 class Question(db.Model):
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
-    originalQuestionID = db.Column(db.String(), unique = True)
+    originalQuestionID = db.Column(db.String())
     answerKey = db.Column(db.String())
     isMultipleChoiceQuestion = db.Column(db.Boolean)
     includesDiagram = db.Column(db.Boolean)
@@ -184,22 +184,20 @@ def get_all_questions():
 
         output.append(q_data)
 
-    return jsonify({"questions": output})
+    return jsonify({"questions": output, "total": len(questions)})
 
 @app.route("/questions/import", methods=["POST"])
 def import_questions():
     questions = request.get_json()
 
-    # return jsonify({"success": True, "amount": len(questions), "first": questions[0]["originalquestionid"]})
-
     for question in questions:
         new_question = Question(
-            originalQuestionID = question["originalquestionid"],
-            answerKey = question["answerkey"],
-            isMultipleChoiceQuestion = bool(question["ismultiplechoicequestion"]),
-            includesDiagram = bool(question["includesdiagram"]),
-            diagramName = question["diagramname"],
-            schoolGrade = question["schoolgrade"],
+            originalQuestionID = question["originalQuestionID"],
+            answerKey = question["answerKey"],
+            isMultipleChoiceQuestion = bool(question["isMultipleChoiceQuestion"]),
+            includesDiagram = bool(question["includesDiagram"]),
+            diagramName = question["diagramName"] if "diagramName" in question else "",
+            schoolGrade = question["schoolGrade"],
             year = question["year"],
             question = question["question"],
             subject = question["subject"],
@@ -209,7 +207,7 @@ def import_questions():
         db.session.add(new_question)
         db.session.commit()
 
-    return jsonify({"success": True})
+    return jsonify({"success": True, "count": len(questions)})
 
 if __name__ == '__main__':
     app.run(debug=True)
