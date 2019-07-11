@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, make_response
+from flask import Flask, request, jsonify, make_response, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
@@ -7,7 +7,7 @@ from functools import wraps
 import os
 from flask_cors import CORS
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path = '')
 
 # Format db path
 db_path = os.path.join(os.path.dirname(__file__), "db.sqlite")
@@ -142,6 +142,11 @@ def get_question_by_id(current_user, question_id):
     # q_data["qmatrix"] = question.qmatrix
 
     return jsonify({"success": True, "data": q_data})
+
+@app.route("/public/images/<image_id>", methods=["GET"])
+@token_required
+def get_public_image(current_user, image_id):
+    return send_from_directory("public/images", image_id)
 
 # Debugging routes
 @app.route("/users", methods=["GET"])
