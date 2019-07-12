@@ -68,14 +68,8 @@ export class UserService {
     })
   }
 
-  public IsLoggedIn() {
-    this.GetUserToken()
-      .then(() => {
-        return true;
-      })
-      .catch(() => {
-        return false;
-      })
+  public IsLoggedIn(): Boolean {
+    return !(localStorage.getItem('token') == null);
   }
 
   public Logout() {
