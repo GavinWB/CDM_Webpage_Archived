@@ -1,6 +1,8 @@
 # Setup
+## Flask backend
 Install back-end dependencies
 ```
+cd flask
 virtualenv venv
 source venv/bin/activate
 pip install -r requirement.txt
