@@ -1,0 +1,37 @@
+<nav class="navbar navbar-default fixed-top navbar-expand-md navbar-dark bg-dark">
+    <a class="navbar-brand" style="color: white">CDM - Webpage</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+    aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+    <ul class="navbar-nav mr-auto">
+        <li *ngIf="userService.IsLoggedIn()">
+            <a routerLink="/home" class="nav-link"><i class="fas fa-home"></i> Home</a>
+        </li>
+    </ul>
+
+    <ul class="navbar-nav ml-auto">
+        <div *ngIf="userService.IsLoggedIn()" class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Settings
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" routerLink="/changepassword"><i class="fas fa-key"></i>Change Password</a>
+            <a class="dropdown-item" routerLink="/resetcourses"><i class="fas fa-sync"></i>Reset Courses</a>
+        </div>
+        </div>
+
+        <li *ngIf="!userService.IsLoggedIn()" routerLink="/login">
+            <a class="nav-link">Login</a>
+        </li>
+        <li *ngIf="!userService.IsLoggedIn()" routerLink="/register">
+            <a class="nav-link">Register</a>
+        </li>
+        <li *ngIf="userService.IsLoggedIn()" class="nav-item">
+            <a class="nav-link" (click)="OnLogoutClick()">Logout<i class="fas fa-sign-out-alt" style="margin-left: 5px"></i></a>
+        </li>
+    </ul>
+    </div>
+</nav>

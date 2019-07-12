@@ -1,0 +1,7 @@
+.nav-link:hover {
+    cursor: pointer;
+}
+
+.dropdown-menu a i {
+    margin-right: 10px;
+}
