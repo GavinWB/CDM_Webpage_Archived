@@ -69,7 +69,7 @@ export class UserService {
   }
 
   public IsLoggedIn(): Boolean {
-    return !(localStorage.getItem('token') == null);
+    return !(localStorage.getItem('userToken') == null);
   }
 
   public Logout() {
