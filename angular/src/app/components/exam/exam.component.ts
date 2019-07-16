@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { QuestionService } from '../../services/question.service';
+import { UserService } from '../../services/user.service';
 import { UIService } from '../../services/ui.service';
 import { Router } from '@angular/router';
-import { Question } from '../../classes/question';
 
 @Component({
   selector: 'app-exam',
@@ -14,6 +14,7 @@ export class ExamComponent implements OnInit {
 
   constructor(
     private questionService: QuestionService,
+    private userService: UserService,
     private uiService: UIService,
     private router: Router) { }
 
@@ -49,11 +50,45 @@ export class ExamComponent implements OnInit {
 
   MakeChoiceList(questionID, choices) {
     let output = ``;
+    let i = 0;
 
     for (let choice of choices) {
-      output += `<input type="radio" name=${questionID} value=${choice}>  ${choice}</input><br />`
+      output += `<input type="radio" name=${questionID} value=${String.fromCharCode(65 + i)}>  ${choice}</input><br />`
+      i++;
     }
 
     return output;
+  }
+  
+  OnTestSubmit() {
+    let data = [];
+
+    for (let item of this.questions) {
+      let questionID = item.originalQuestionID;
+      let answer = "";
+
+      if (item.isMultipleChoiceQuestion) {
+        let choices: any = document.getElementsByName(questionID);
+        for (let ch of choices) {
+          if (ch.checked) {
+            answer = ch.value;
+            break;
+          }
+        }
+      } else {
+        answer = (<HTMLInputElement>document.getElementById(questionID)).value;  
+      }
+
+      data.push({
+        "questionID": questionID,
+        "answer": answer
+      })
+    }
+
+    this.userService.GetUserToken().then(userToken => {
+      this.questionService.CheckExamResult(userToken, data).toPromise().then(data => {
+        console.log(data);
+      })
+    })
   }
 }

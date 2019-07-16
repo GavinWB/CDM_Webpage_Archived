@@ -10,10 +10,12 @@
         <div *ngIf="question.isMultipleChoiceQuestion" id="{{ question.originalQuestionID }}">
             {{ DisplayChoices(question) }}
         </div>
-        <div *ngIf="!question.isMultipleChoiceQuestion" id="{{ question.originalQuestionID }}">
-            <b>Answer: </b><input type="text" />
+        <div *ngIf="!question.isMultipleChoiceQuestion">
+            <b>Answer: </b><input id="{{ question.originalQuestionID }}" type="text" />
         </div>
 
         <hr>
     </div>
+
+    <button (click)="OnTestSubmit()">SUBMIT</button>
 </div>
