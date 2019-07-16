@@ -7,11 +7,8 @@ import { Question } from '../classes/question';
   providedIn: 'root'
 })
 export class QuestionService {
-  private httpOptions: any = {
-    headers: new HttpHeaders({"Content-Type": "application/json"})
-  };
   private api: String = "http://localhost:5000";
-  private num_question: Number = 25;
+  private num_question: Number = 10;
 
   constructor(
     private http: HttpClient
@@ -44,5 +41,12 @@ export class QuestionService {
 
   public GetDiagramURL(diagramName) {
     return `${this.api}/public/images/${diagramName}`
+  }
+
+  public CheckExamResult(userToken: String, items: any) {
+    let header: any = {
+      headers: new HttpHeaders({"Content-Type": "application/json", "Authorization": `Bearer ${userToken}`})
+    };
+    return this.http.post(`${this.api}/exam/check`, items, header);
   }
 }
