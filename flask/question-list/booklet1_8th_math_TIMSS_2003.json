@@ -119,20 +119,6 @@
         "qmatrix": "000100001000000"
     },
     {
-        "questionID": "10",
-        "originalQuestionID": "M012017",
-        "answerKey": "B",
-        "isMultipleChoiceQuestion": 1,
-        "includesDiagram": 1,
-        "diagramName": "M012017.PNG",
-        "schoolGrade": "8",
-        "year": "2003",
-        "question": "Matchsticks are arranged as shown in the figures. If the pattern is continued, how many matchsticks would be used to make Figure 10? (A) 30 (B) 33 (C) 36 (D) 39 (E) 42",
-        "subject": "math",
-        "category": "Algebra",
-        "qmatrix": "000001000010010"
-    },
-    {
         "questionID": "11",
         "originalQuestionID": "M022251",
         "answerKey": "C",
