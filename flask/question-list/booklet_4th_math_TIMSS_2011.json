@@ -41,8 +41,8 @@
     {
         "questionID": "4",
         "originalQuestionID": "M051007",
-        "answerKey": "C",
-        "isMultipleChoiceQuestion": 1,
+        "answerKey": "3",
+        "isMultipleChoiceQuestion": 0,
         "includesDiagram": 1,
         "diagramName": "M051007.PNG",
         "schoolGrade": "4",
@@ -279,7 +279,7 @@
         "diagramName": "M041184.PNG",
         "schoolGrade": "4",
         "year": "2011",
-        "question": "Mr. Johnson asked the students in his school about their favorite subject. This pie chart shows how many students liked each of 5 subjects. Which graph shows the same information as the pie chart?",
+        "question": "Mr. Johnson asked the students in his school about their favorite subject. This pie chart shows how many students liked each of 5 subjects. Which graph shows the same information as the pie chart? (A) A (B) B (C) C (D) D",
         "subject": "math",
         "category": "DATA DISPLAY",
         "qmatrix": "000000000000101"
