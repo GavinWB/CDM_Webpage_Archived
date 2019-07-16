@@ -1,1 +1,11 @@
-<p>exam works!</p>
+<ul>
+    <li *ngFor="let question of questions">
+        <h6>{{ question.originalQuestionID }}</h6>
+        <br />
+        <p>{{ question.question }}</p>
+        <br />
+        <div *ngIf="question.includesDiagram">
+            <img src="{{ RequestDiagram(question.diagramName) }}" />
+        </div>
+    </li>
+</ul>
