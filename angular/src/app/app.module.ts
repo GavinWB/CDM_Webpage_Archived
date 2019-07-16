@@ -7,11 +7,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
-
-import { UserService } from './services/user.service';
 import { ModalComponent } from './components/modal/modal.component';
 import { RegisterComponent } from './components/register/register.component';
 import { HomeComponent } from './components/home/home.component';
+
+import { UserService } from './services/user.service';
+import { QuestionService } from './services/question.service';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { HomeComponent } from './components/home/home.component';
     HttpClientModule
   ],
   providers: [
-    UserService
+    UserService,
+    QuestionService
   ],
   bootstrap: [AppComponent]
 })
