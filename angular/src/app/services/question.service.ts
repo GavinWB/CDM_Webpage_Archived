@@ -23,4 +23,26 @@ export class QuestionService {
     };
     return this.http.get(`${this.api}/exam/grade/${school_grade}/question/${this.num_question}`, header);
   }
+
+  public SaveQuestionSet(questions: Question[]) {
+    return new Promise((resolve, reject) => {
+      localStorage.setItem("questions", JSON.stringify(questions));
+      resolve();
+    })
+  }
+
+  public GetQuestionSet() {
+    return new Promise((resolve, reject) => {
+      let savedQuestions = localStorage.getItem("questions");
+      if (savedQuestions !== null) {
+        resolve(JSON.parse(savedQuestions));
+      } else {
+        reject("Please do not refresh the page when doing an exam");
+      }
+    })
+  }
+
+  public GetDiagramURL(diagramName) {
+    return `${this.api}/public/images/${diagramName}`
+  }
 }
