@@ -147,6 +147,27 @@ def gen_random_test(current_user, school_grade, num_question):
 def get_public_image(image_id):
     return send_from_directory("public/images", image_id)
 
+@app.route("/exam/check", methods=["POST"])
+@token_required
+def check_exam_result(current_user):
+    items = request.get_json()
+
+    output = []
+
+    for item in items:
+        data = {}
+        data["questionID"] = item["questionID"]
+        question = Question.query.filter_by(originalQuestionID = item["questionID"]).first()
+
+        if item["answer"] == question.answerKey:
+            data["result"] = True
+        else:
+            data["result"] = False
+
+        output.append(data)
+
+    return jsonify({"result": output})
+
 # Debugging routes
 @app.route("/users", methods=["GET"])
 def get_all_users():
