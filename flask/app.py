@@ -119,31 +119,6 @@ def user_login():
 
     return jsonify({"success": False, "message": "Wrong username or password"})
 
-@app.route("/question/<question_id>", methods=["GET"])
-@token_required
-def get_question_by_id(current_user, question_id):
-    question = Question.query.filter_by(originalQuestionID = question_id).first()
-
-    if not question:
-        return jsonify({"success": False, "message": "There is no question with this id"})
-
-    q_data = {}
-
-    # q_data["id"] = question.id
-    q_data["originalQuestionID"] = question.originalQuestionID
-    # q_data["answerKey"] = question.answerKey
-    q_data["isMultipleChoiceQuestion"] = question.isMultipleChoiceQuestion
-    q_data["includesDiagram"] = question.includesDiagram
-    q_data["diagramName"] = question.diagramName
-    # q_data["schoolGrade"] = question.schoolGrade
-    # q_data["year"] = question.year
-    q_data["question"] = question.question
-    # q_data["subject"] = question.subject
-    # q_data["category"] = question.category
-    # q_data["qmatrix"] = question.qmatrix
-
-    return jsonify({"success": True, "data": q_data})
-
 @app.route("/exam/grade/<school_grade>/question/<num_question>", methods=["GET"])
 @token_required
 def gen_random_test(current_user, school_grade, num_question):
@@ -237,6 +212,54 @@ def import_questions():
         db.session.commit()
 
     return jsonify({"success": True, "count": len(questions)})
+
+@app.route("/question/<question_id>", methods=["GET"])
+def get_question_by_id(question_id):
+    question = Question.query.filter_by(originalQuestionID = question_id).first()
+
+    if not question:
+        return jsonify({"success": False, "message": "There is no question with this id"})
+
+    q_data = {}
+
+    q_data["originalQuestionID"] = question.originalQuestionID
+    q_data["answerKey"] = question.answerKey
+    q_data["isMultipleChoiceQuestion"] = question.isMultipleChoiceQuestion
+    q_data["includesDiagram"] = question.includesDiagram
+    q_data["diagramName"] = question.diagramName
+    q_data["schoolGrade"] = question.schoolGrade
+    q_data["year"] = question.year
+    q_data["question"] = question.question
+    q_data["subject"] = question.subject
+    q_data["category"] = question.category
+    q_data["qmatrix"] = question.qmatrix
+
+    return jsonify({"success": True, "data": q_data})
+
+@app.route("/question/<question_id>", methods=["PUT"])
+def update_question_by_id(question_id):
+    question = Question.query.filter_by(originalQuestionID = question_id).first()
+
+    if not question:
+        return jsonify({"success": False, "message": "There is no question with this id"})
+
+    new_question = request.get_json()
+
+    question.originalQuestionID = new_question["originalQuestionID"]
+    question.answerKey = new_question["answerKey"]
+    question.isMultipleChoiceQuestion = bool(new_question["isMultipleChoiceQuestion"])
+    question.includesDiagram = bool(new_question["includesDiagram"])
+    question.diagramName = new_question["diagramName"]
+    question.schoolGrade = new_question["schoolGrade"]
+    question.year = new_question["year"]
+    question.question = new_question["question"]
+    question.subject = new_question["subject"]
+    question.category = new_question["category"]
+    question.qmatrix = new_question["qmatrix"]
+
+    db.session.commit()
+
+    return jsonify({"success": True, "message": "Question has been updated"})
 
 if __name__ == '__main__':
     app.run(debug=True)
