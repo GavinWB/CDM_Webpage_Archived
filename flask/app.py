@@ -6,6 +6,7 @@ import datetime
 from functools import wraps
 import os
 from flask_cors import CORS
+import random
 
 app = Flask(__name__, static_url_path = '')
 
@@ -142,6 +143,30 @@ def get_question_by_id(current_user, question_id):
     # q_data["qmatrix"] = question.qmatrix
 
     return jsonify({"success": True, "data": q_data})
+
+@app.route("/exam/grade/<school_grade>/question/<num_question>", methods=["GET"])
+@token_required
+def gen_random_test(current_user, school_grade, num_question):
+    questions = Question.query.filter_by(schoolGrade = school_grade).all()
+    
+    if (len(questions) < int(num_question)):
+        return jsonify({"success": False, "message": "There are too few questions of requested type"})
+
+    random_indices = random.sample(range(len(questions)), int(num_question))
+
+    output = []
+
+    for index in random_indices:
+        data = {}
+        data["originalQuestionID"] = questions[index].originalQuestionID
+        data["isMultipleChoiceQuestion"] = questions[index].isMultipleChoiceQuestion
+        data["includesDiagram"] = questions[index].includesDiagram
+        data["diagramName"] = questions[index].diagramName
+        data["question"] = questions[index].question
+
+        output.append(data)
+
+    return jsonify({"success": True, "questions": output})
 
 @app.route("/public/images/<image_id>", methods=["GET"])
 @token_required
