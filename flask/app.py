@@ -28,7 +28,7 @@ class User(db.Model):
 
 class Question(db.Model):
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
-    originalQuestionID = db.Column(db.String())
+    originalQuestionID = db.Column(db.String(), unique = True)
     answerKey = db.Column(db.String())
     isMultipleChoiceQuestion = db.Column(db.Boolean)
     includesDiagram = db.Column(db.Boolean)
