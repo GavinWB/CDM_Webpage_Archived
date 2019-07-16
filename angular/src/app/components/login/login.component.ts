@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
           this.userService.StoreUsername(data.username);
           this.userService.StoreUserToken(data.token);
           this.uiService.OpenModal("Should redirect", data.message);
-          // this.router.navigate(['home']);
+          this.router.navigate(['home']);
         } else {
           this.uiService.OpenModal("Oops!", data.message);
         }
