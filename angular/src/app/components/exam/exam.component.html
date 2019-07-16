@@ -1,11 +1,19 @@
-<ul>
-    <li *ngFor="let question of questions">
-        <h6>{{ question.originalQuestionID }}</h6>
+<div class="container">
+    <div class="question" *ngFor="let question of questions">
+        <h4>Question - {{ question.originalQuestionID }}</h4>
         <br />
-        <p>{{ question.question }}</p>
+        <p>{{ DisplayQuestion(question) }}</p>
         <br />
-        <div *ngIf="question.includesDiagram">
+        <div *ngIf="question.includesDiagram" style="margin-bottom: 10px;">
             <img src="{{ RequestDiagram(question.diagramName) }}" />
         </div>
-    </li>
-</ul>
+        <div *ngIf="question.isMultipleChoiceQuestion" id="{{ question.originalQuestionID }}">
+            {{ DisplayChoices(question) }}
+        </div>
+        <div *ngIf="!question.isMultipleChoiceQuestion" id="{{ question.originalQuestionID }}">
+            <b>Answer: </b><input type="text" />
+        </div>
+
+        <hr>
+    </div>
+</div>

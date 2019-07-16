@@ -21,7 +21,6 @@ export class ExamComponent implements OnInit {
     this.questionService.GetQuestionSet()
     .then(questions => {
       this.questions = questions;
-      console.log(this.questions);
     })
     .catch(err => {
       this.uiService.OpenModal("An error has occurred", err);
@@ -33,4 +32,28 @@ export class ExamComponent implements OnInit {
     return this.questionService.GetDiagramURL(diagramName);
   }
 
+  DisplayQuestion(question) {
+    if (!question.isMultipleChoiceQuestion) return question.question;
+    
+    let splitted = question.question.split(/\s\([A-Z]\)\s/);
+    return splitted[0];
+  }
+
+  DisplayChoices(question) {
+    let choices = question.question.split(/\s\([A-Z]\)\s/);
+    choices.shift(); // Remove the question
+
+    let content = this.MakeChoiceList(question.originalQuestionID, choices);
+    document.getElementById(question.originalQuestionID).innerHTML = content;
+  }
+
+  MakeChoiceList(questionID, choices) {
+    let output = ``;
+
+    for (let choice of choices) {
+      output += `<input type="radio" name=${questionID} value=${choice}>  ${choice}</input><br />`
+    }
+
+    return output;
+  }
 }
