@@ -169,8 +169,7 @@ def gen_random_test(current_user, school_grade, num_question):
     return jsonify({"success": True, "questions": output})
 
 @app.route("/public/images/<image_id>", methods=["GET"])
-@token_required
-def get_public_image(current_user, image_id):
+def get_public_image(image_id):
     return send_from_directory("public/images", image_id)
 
 # Debugging routes
