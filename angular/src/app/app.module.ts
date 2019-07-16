@@ -3,6 +3,9 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
+import { UserService } from './services/user.service';
+import { QuestionService } from './services/question.service';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
@@ -10,9 +13,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { ModalComponent } from './components/modal/modal.component';
 import { RegisterComponent } from './components/register/register.component';
 import { HomeComponent } from './components/home/home.component';
-
-import { UserService } from './services/user.service';
-import { QuestionService } from './services/question.service';
+import { ExamComponent } from './components/exam/exam.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { QuestionService } from './services/question.service';
     NavbarComponent,
     ModalComponent,
     RegisterComponent,
-    HomeComponent
+    HomeComponent,
+    ExamComponent
   ],
   imports: [
     BrowserModule,
