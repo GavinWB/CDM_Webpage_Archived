@@ -87,7 +87,10 @@ export class ExamComponent implements OnInit {
 
     this.userService.GetUserToken().then(userToken => {
       this.questionService.CheckExamResult(userToken, data).toPromise().then(data => {
-        console.log(data);
+        let result: any = data;
+
+        this.uiService.OpenModal(`Result: ${result.score}/${result.total}`, "Your test result will be used to personalized your future tests");
+        this.router.navigate(["home"]);
       })
     })
   }
