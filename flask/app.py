@@ -8,6 +8,9 @@ import os
 from flask_cors import CORS
 import random
 
+import numpy as np
+from cdm import estimate_skills
+
 app = Flask(__name__, static_url_path = '')
 
 # Format db path
@@ -152,21 +155,37 @@ def get_public_image(image_id):
 def check_exam_result(current_user):
     items = request.get_json()
 
-    output = []
+    score = 0
+    grade = 8
 
+    data = {}
     for item in items:
-        data = {}
-        data["questionID"] = item["questionID"]
+        # data["questionID"] = item["questionID"]
         question = Question.query.filter_by(originalQuestionID = item["questionID"]).first()
 
+        grade = question.schoolGrade
+
         if item["answer"] == question.answerKey:
-            data["result"] = True
+            data[question.originalQuestionID] = True
+            score += 1
         else:
-            data["result"] = False
+            data[question.originalQuestionID] = False
 
-        output.append(data)
+    # Preprocess for estimate skill function
+    questions = Question.query.filter_by(schoolGrade = grade).all()
+    student_score = np.zeros(len(questions), dtype = int)
 
-    return jsonify({"result": output})
+    index = 0
+    for question in questions:
+        if question.originalQuestionID in data:
+            if data[question.originalQuestionID]:
+                student_score[index] = 1
+
+        index += 1
+            
+    est_skills = estimate_skills(grade, np.array2string(student_score))
+
+    return jsonify({"result": data, "score": score, "total": len(items), "skill_state": np.array2string(est_skills)})
 
 # Debugging routes
 @app.route("/users", methods=["GET"])
