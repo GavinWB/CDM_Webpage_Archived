@@ -14,6 +14,7 @@ import { ModalComponent } from './components/modal/modal.component';
 import { RegisterComponent } from './components/register/register.component';
 import { HomeComponent } from './components/home/home.component';
 import { ExamComponent } from './components/exam/exam.component';
+import { ResultComponent } from './components/result/result.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { ExamComponent } from './components/exam/exam.component';
     ModalComponent,
     RegisterComponent,
     HomeComponent,
-    ExamComponent
+    ExamComponent,
+    ResultComponent
   ],
   imports: [
     BrowserModule,

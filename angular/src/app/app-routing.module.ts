@@ -8,12 +8,14 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { HomeComponent } from './components/home/home.component';
 import { ExamComponent } from './components/exam/exam.component';
+import { ResultComponent } from './components/result/result.component';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent, canActivate: [NotauthGuard]},
   {path: 'register', component: RegisterComponent, canActivate: [NotauthGuard]},
   {path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
   {path: 'exam', component: ExamComponent, canActivate: [AuthGuard]},
+  {path: 'result', component: ResultComponent, canActivate: [AuthGuard]},
   {path: "**", redirectTo: "login"}
 ];
 

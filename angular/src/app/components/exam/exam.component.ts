@@ -16,7 +16,8 @@ export class ExamComponent implements OnInit {
     private questionService: QuestionService,
     private userService: UserService,
     private uiService: UIService,
-    private router: Router) { }
+    private router: Router
+    ) { }
 
   ngOnInit() {
     this.questionService.GetQuestionSet()
@@ -89,8 +90,9 @@ export class ExamComponent implements OnInit {
       this.questionService.CheckExamResult(userToken, data).toPromise().then(data => {
         let result: any = data;
 
-        this.uiService.OpenModal(`Result: ${result.score}/${result.total}`, "Your test result will be used to personalized your future tests");
-        this.router.navigate(["home"]);
+        localStorage.setItem("result", JSON.stringify(result));
+
+        this.router.navigate(["result"]);
       })
     })
   }

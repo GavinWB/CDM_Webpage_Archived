@@ -21,9 +21,9 @@ export class HomeComponent implements OnInit {
   ngOnInit( ) {
   }
 
-  OpenTest(school_grade) {
+  OpenTest(school_grade, num_question) {
     this.userService.GetUserToken().then(token => {
-      this.questionService.GenerateTest(token, school_grade).toPromise().then(data => {
+      this.questionService.GenerateTest(token, school_grade, num_question).toPromise().then(data => {
         if (!data.success) {
           this.uiService.OpenModal("Something went wrong", data.message);
         } else {

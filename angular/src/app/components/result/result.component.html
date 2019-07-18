@@ -1,0 +1,35 @@
+<div>
+    <table class="table" *ngIf="data.grade == 4">
+        <thead>
+            <tr>
+                <th scope="col">Attribute</th>
+                <th scope="col">Description</th>
+                <th scope="col">Mastery Level</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let skill of data.skill_state; index as i">
+                <th scope="row">{{ i + 1 }}</th>
+                <td>{{ this.skill_name_4[i] }}</td>
+                <td>{{ skill }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table class="table" *ngIf="data.grade == 8">
+        <thead>
+            <tr>
+                <th scope="col">Attribute</th>
+                <th scope="col">Description</th>
+                <th scope="col">Mastery Level</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let skill of data.skill_state; index as i">
+                <th scope="row">{{ i + 1 }}</th>
+                <td>{{ this.skill_name_8[i] }}</td>
+                <td>{{ skill }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
