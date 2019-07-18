@@ -74,7 +74,8 @@
         "includesDiagram": 0,
         "schoolGrade": "8",
         "year": "2003",
-        "question": "If x = -3, what is the value of -3x? (A)-9 (B) -6 (C)-1 (D) 1 (E) 9",
+        "diagramName": "",
+        "question": "If x = -3, what is the value of -3x? (A) -9 (B) -6 (C) -1 (D) 1 (E) 9",
         "subject": "math",
         "category": "Algebra",
         "qmatrix": "000010001000000"
@@ -98,9 +99,10 @@
         "answerKey": "C",
         "isMultipleChoiceQuestion": 1,
         "includesDiagram": 0,
+        "diagramName": "",
         "schoolGrade": "8",
         "year": "2003",
-        "question": "If n is a negative integer, which of these is the largest number? (A) 3 + n (B) 3 × n (C) 3 ? n (D) 3 ÷ n",
+        "question": "If n is a negative integer, which of these is the largest number? (A) 3 + n (B) 3 × n (C) 3 - n (D) 3 ÷ n",
         "subject": "math",
         "category": "Number",
         "qmatrix": "000100001000000"

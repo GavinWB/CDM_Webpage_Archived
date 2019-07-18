@@ -200,7 +200,7 @@
         "diagramName": "M032416.PNG",
         "schoolGrade": "8",
         "year": "2003",
-        "question": "which shows a correct procedure for finding 1/5-1/3?",
+        "question": "which shows a correct procedure for finding 1/5-1/3? (A) A (B) B (C) C (D) D",
         "subject": "math",
         "category": "Number",
         "qmatrix": "001000000000001"
@@ -223,8 +223,9 @@
         "isMultipleChoiceQuestion": 1,
         "includesDiagram": 0,
         "schoolGrade": "8",
+        "diagramName": "",
         "year": "2003",
-        "question": "3(2x-1)+2x=21, what is the value of x? (A) -3 (B)-11/4 (C) 11/4 (D) 3",
+        "question": "3(2x-1)+2x=21, what is the value of x? (A) -3 (B) -11/4 (C) 11/4 (D) 3",
         "subject": "math",
         "category": "Algebra",
         "qmatrix": "000001000000000"
