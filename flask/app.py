@@ -185,7 +185,7 @@ def check_exam_result(current_user):
             
     est_skills = estimate_skills(grade, np.array2string(student_score))
 
-    return jsonify({"result": data, "score": score, "total": len(items), "skill_state": np.array2string(est_skills)})
+    return jsonify({"result": data, "grade": grade, "score": score, "total": len(items), "skill_state": np.array2string(est_skills)})
 
 # Debugging routes
 @app.route("/users", methods=["GET"])
