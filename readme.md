@@ -18,3 +18,13 @@ Run the server
 ```
 python app.py
 ```
+## Angular frontend
+Install node dependencies
+```
+cd angular
+npm install
+```
+And then serve via localhost
+```
+ng serve --open
+```
