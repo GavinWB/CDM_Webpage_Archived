@@ -9,7 +9,7 @@ from flask_cors import CORS
 import random
 
 import numpy as np
-from cdm import estimate_skills
+from cdm import estimate_skills, remedial_hamming
 
 app = Flask(__name__, static_url_path = '')
 
@@ -186,6 +186,30 @@ def check_exam_result(current_user):
     est_skills = estimate_skills(grade, np.array2string(student_score))
 
     return jsonify({"result": data, "grade": grade, "score": score, "total": len(items), "skill_state": np.array2string(est_skills)})
+
+@app.route("/exam/remedial/hamming", methods=["POST"])
+@token_required
+def generate_remedial_hamming_questions(current_user):
+    data = request.get_json()
+    student_skill = np.fromstring(data["student_skill"], sep = " ", dtype = int)
+    
+    idx = remedial_hamming(data["grade"], student_skill)
+
+    questions = Question.query.filter_by(schoolGrade = data["grade"]).all()
+
+    output = []
+
+    for index in idx:
+        data = {}
+        data["originalQuestionID"] = questions[index].originalQuestionID
+        data["isMultipleChoiceQuestion"] = questions[index].isMultipleChoiceQuestion
+        data["includesDiagram"] = questions[index].includesDiagram
+        data["diagramName"] = questions[index].diagramName
+        data["question"] = questions[index].question
+
+        output.append(data)
+
+    return jsonify({"success": True, "questions": output})
 
 # Debugging routes
 @app.route("/users", methods=["GET"])
