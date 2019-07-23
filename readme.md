@@ -1,3 +1,5 @@
+# Archived
+This repo has been archived, should not have put both the frontend and backend app into the same repo :(
 # Setup
 ## Flask backend
 Install back-end dependencies
