@@ -48,4 +48,11 @@ export class QuestionService {
     };
     return this.http.post(`${this.api}/exam/check`, items, header);
   }
+
+  public GenerateRemedialQuestions(userToken: String, param: any) {
+    let header: any = {
+      headers: new HttpHeaders({"Content-Type": "application/json", "Authorization": `Bearer ${userToken}`})
+    };
+    return this.http.post(`${this.api}/exam/remedial/hamming`, param, header);
+  }
 }
