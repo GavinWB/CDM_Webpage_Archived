@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { UserService } from '../../services/user.service';
+import { QuestionService } from '../../services/question.service';
 import { UIService } from '../../services/ui.service';
 import { Router } from '@angular/router';
 
@@ -45,6 +47,8 @@ export class ResultComponent implements OnInit {
   ]
 
   constructor(
+    private userService: UserService,
+    private questionService: QuestionService,
     private uiService: UIService,
     private router: Router
     ) { }
@@ -72,6 +76,27 @@ export class ResultComponent implements OnInit {
       s = s.split(" ");
       this.data.skill_state = s;
     }
+  }
+
+  RequestRemedialQuestions() {
+    let param = {
+      grade: this.data.grade,
+      student_skill: this.data.skill_state.join(" ")
+    }
+
+    this.userService.GetUserToken().then(token => {
+      this.questionService.GenerateRemedialQuestions(token, param).toPromise().then(data => {
+        let res: any = data;
+        this.OpenTest(res.questions);
+      })
+    })
+  }
+
+
+  OpenTest(questions) {
+    this.questionService.SaveQuestionSet(questions).then(() => {
+      this.router.navigate(['exam']);
+    });
   }
 
 }
