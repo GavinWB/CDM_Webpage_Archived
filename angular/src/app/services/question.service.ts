@@ -7,7 +7,7 @@ import { Question } from '../classes/question';
   providedIn: 'root'
 })
 export class QuestionService {
-  private api: String = "http://localhost:5000";
+  private api: String = "https://cdm-flask.herokuapp.com";
 
   constructor(
     private http: HttpClient

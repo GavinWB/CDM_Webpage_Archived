@@ -10,7 +10,7 @@ export class UserService {
   private httpOptions: any = {
     headers: new HttpHeaders({"Content-Type": "application/json"})
   };
-  private api: String = "http://localhost:5000";
+  private api: String = "https://cdm-flask.herokuapp.com";
   private userToken: String;
   private username: String;
 
