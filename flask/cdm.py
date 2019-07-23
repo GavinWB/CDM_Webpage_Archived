@@ -14,7 +14,6 @@ def estimate_g_s_demo():
 
     # Input matrices
     q_mat = np.random.binomial(1, 0.5, (K, n)) # Q-matrix: latent knowledges x questions
-    # Read from file
     a_mat = np.random.binomial(1, 0.7, (m, K)) # A-matrix: student x latent knowledges
 
     # Guess and no slip (which is 1 - slip) probabilities for each question
@@ -62,3 +61,18 @@ def estimate_skills(grade, student_score):
     est_skills = _estimate_skills(guess = est_g, no_slip = est_no_s, q_mat = q_mat, score = score)
     
     return est_skills[est_skills.shape[0] - 1] # Return the last row
+
+# Generate remedial question using a simple method of
+# calculating the hamming distance between the student curent skill
+# and all the q_vector, then return the questions with the nearest distance
+def remedial_hamming(grade, student_skill, num_remedial_questions = 10):
+    if grade != 4 and grade != 8:
+        grade = 4
+    
+    q_mat = read_q_matrix(grade).T # In the pypsy package, the q_mat has the shape K x n
+    diff = (q_mat != student_skill)
+    h_dist = np.sum(diff, axis = 1) # Hamming distances between each row of q_matrix and student_skill vector 
+    # https://stackoverflow.com/questions/34226400/find-the-index-of-the-k-smallest-values-of-a-numpy-array
+    idx = np.argpartition(h_dist, num_remedial_questions)
+
+    return idx[:num_remedial_questions] # Return indexes of the questions with smallest Hamming distances 
